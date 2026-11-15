@@ -14,8 +14,8 @@
   <link rel="apple-touch-icon" href="./icons/icon-192.png" />
   <link rel="manifest" href="./manifest.webmanifest" />
   <style>html,body{background:#05070c;height:100%;margin:0;overflow:hidden}#boot{z-index:99;color:#cfe8ff;letter-spacing:.2em;background:radial-gradient(circle at 50% 40%,#0f1a2a,#05070c 70%);flex-direction:column;justify-content:center;align-items:center;font:600 14px system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif;transition:opacity .6s;display:flex;position:fixed;top:0;bottom:0;left:0;right:0}#boot.hide{opacity:0;pointer-events:none}#boot .ring{border:3px solid #33d6ff33;border-top-color:#33d6ff;border-radius:50%;width:54px;height:54px;margin-bottom:18px;animation:.9s linear infinite sp}@keyframes sp{to{transform:rotate(360deg)}}</style>
-  <script type="module" crossorigin src="./assets/index-DClrsGFI.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-qfrghOGX.css">
+  <script type="module" crossorigin src="./assets/index-DXy3VkPK.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-DAMWf2uW.css">
 </head>
 <body>
   <div id="boot"><div class="ring"></div><div>STEELBORN</div><div id="boot-sub" style="opacity:.6;font-size:11px;margin-top:8px">BOOTING REACTOR…</div></div>
@@ -24,7 +24,7 @@
 
   <!-- TITLE -->
   <div id="title" class="screen hidden">
-    <div class="t-logo"><small>MECH COMBAT · v2</small><h1>STEEL<span>BORN</span></h1><p>Build it. Overheat it. Break them.</p></div>
+    <div class="t-logo"><small>MECH COMBAT · v3</small><h1>STEEL<span>BORN</span></h1><p>Build it. Overheat it. Break them.</p></div>
     <div class="t-menu">
       <button id="tCampaign" class="btn pri big">CAMPAIGN<small id="tCamp">REGION 1 · ASHGATE</small></button>
       <button id="tDeploy" class="btn big2">ARENA<small>QUICK FIGHT · <span id="tBuild">VANGUARD</span></small></button>
@@ -44,7 +44,7 @@
     <div id="statPanel"></div>
     <div id="gToasts"></div>
     <div class="g-sheet">
-      <div class="tabs"><button data-tab="parts" class="on">PARTS</button><button data-tab="paint">PAINT</button><button data-tab="builds">BUILDS</button></div>
+      <div class="tabs"><button data-tab="parts" class="on">PARTS</button><button data-tab="paint">PAINT</button><button data-tab="builds">BUILDS</button><button data-tab="pilot">PILOT</button></div>
       <div id="tabParts">
         <div id="slotChips"></div>
         <div id="partCount"></div>
@@ -53,6 +53,7 @@
       </div>
       <div id="tabPaint" hidden></div>
       <div id="tabBuilds" hidden></div>
+      <div id="tabPilot" hidden><div class="seg pl-sub"><button data-psub="profile" class="on">PROFILE</button><button data-psub="perks">PERKS</button></div><div id="plBody"></div></div>
     </div>
   </div>
 
@@ -62,6 +63,7 @@
     <div id="cine"><i></i><i></i></div>
     <div class="h-top">
       <div class="h-bars">
+        <div class="hb sh"><i id="shFill"></i><label>SHIELD</label><b id="shTxt">0</b></div>
         <div class="hb hp"><i id="hpLag"></i><i id="hpFill"></i><label>HP</label><b id="hpTxt">0</b></div>
         <div class="hb en"><i id="enFill"></i><label>ENERGY</label></div>
         <div class="hb heat" id="heatBox"><i id="heatFill"></i><label>CORE HEAT</label><em>OVERDRIVE</em></div>
@@ -74,7 +76,7 @@
     <div id="minimap"><canvas id="mmCanvas" width="224" height="224"></canvas><i id="mmN">N</i><button id="mapBtn">MAP</button></div>
     <div id="capture"><b id="capTitle">CAPTURING</b><div><i id="capFill"></i></div></div>
     <button id="bAct" class="btn pri"></button>
-    <div id="bossBar"><div id="bossName">WARDEN</div><div class="bb"><i id="bossLag"></i><i id="bossFill"></i></div><div id="bossPips"></div></div>
+    <div id="bossBar"><div id="bossName">WARDEN</div><div class="bb"><i id="bossLag"></i><i id="bossFill"></i></div><div class="bsh"><i id="bossSh"></i></div><div id="bossPips"></div></div>
     <div id="combo"><b id="comboN">0</b><span>HITS</span></div>
     <div id="moveName"></div>
     <div id="banner"></div>
@@ -82,13 +84,20 @@
     <div id="toasts"></div>
     <div id="nums"></div>
     <div id="arrows"></div>
+    <div id="ebars"></div>
+    <div id="reticle"><i></i><i></i><i></i><i></i><b></b></div>
     <div id="fps" hidden></div>
+    <div id="radio"><img id="radioFace" alt=""><div><b id="radioName"></b><p id="radioText"></p></div></div>
+    <div id="footHud"><b id="footT">25</b><span id="footTo">RUN TO THE GARAGE</span><div class="fh"><i id="footHp"></i></div></div>
+    <button id="ckSkip" class="btn">SKIP ▸▸</button>
+    <div id="zoomCtl"><button id="zIn" aria-label="Zoom in">+</button><button id="zOut" aria-label="Zoom out">−</button><button id="zReset" aria-label="Reset camera">⟲</button><i id="zLvl"></i></div>
     <div id="stickZone"><div id="stickBase"><div id="stickKnob"></div></div><span class="sz-hint">MOVE</span></div>
     <div id="btns">
       <button data-a="finisher" id="bFin"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" class="bg"/><circle id="finRing" cx="50" cy="50" r="48" class="fg"/></svg><span>FINISH</span></button>
       <button data-a="guard" id="bGuard"><span>GUARD</span></button>
       <button data-a="heavy" id="bHeavy"><span>HEAVY</span></button>
       <button data-a="dash" id="bDash"><span>DASH</span></button>
+      <button data-a="fire" id="bFire"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" class="bg"/><circle id="fireRing" cx="50" cy="50" r="46" class="fg"/></svg><span>FIRE</span><em id="fireAmmo"></em></button>
       <button data-a="light" id="bLight"><span>LIGHT</span></button>
       <button data-a="ability" id="bAbil"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" class="bg"/><circle id="abRing" cx="50" cy="50" r="46" class="fg"/></svg><i id="abGlyph">⤓</i><span id="abName">JET SLAM</span><b id="abCd"></b></button>
     </div>
@@ -116,10 +125,16 @@
     <button class="btn" id="mapClose">CLOSE</button>
   </div></div>
   <div id="intro" class="modal"><div class="panel intro">
-    <small id="inStep">TRANSMISSION 1/3</small>
+    <div class="in-who"><img id="inFace" alt=""><div><b>VEX · HANDLER</b><br><small id="inStep">TRANSMISSION 1/3</small></div></div>
     <h2 id="inTitle">ASHGATE</h2>
     <p id="inText"></p>
     <div class="row"><button id="inSkip" class="btn">SKIP</button><button id="inNext" class="btn pri">NEXT ▸</button></div>
+  </div></div>
+  <div id="pilotModal" class="modal"><div class="panel pilotp"><div id="pmBody"></div></div></div>
+  <div id="pilotChoice" class="modal"><div class="panel choice">
+    <small id="pcRole">ELITE PILOT EJECTED</small>
+    <div class="pc-top"><img id="pcFace" alt=""><div><b id="pcName">PILOT</b><p id="pcLine"></p></div></div>
+    <div class="pc-opts"><button id="pcCapture" class="btn pri"><b>CAPTURE</b><span id="pcCapS">+150 scrap · Rare+ part</span></button><button id="pcRelease" class="btn"><b>RELEASE</b><span id="pcRelS">+120 pilot XP · +1 reputation</span></button></div>
   </div></div>
   <div id="clearScreen" class="modal"><div class="panel res win">
     <small>CAMPAIGN · REGION 1</small><h2>REGION SECURED</h2>
@@ -127,7 +142,7 @@
     <h3>BOSS PARTS RECOVERED</h3><div id="clParts"></div>
     <div class="row"><button id="clGo" class="btn pri">KEEP EXPLORING</button><button id="clHangar" class="btn">HUB GARAGE</button></div>
   </div></div>
-  <div id="settings" class="modal"><div class="panel"><h2>SETTINGS</h2><label class="lbl">GRAPHICS QUALITY</label><div id="setQ" class="seg"></div><p id="setCur" class="hint"></p><label class="chk"><input type="checkbox" id="setFps"> Show FPS counter</label><p class="hint">Auto picks a level for your phone and lowers resolution, then bloom, if combat drops below ~42 FPS. Changing quality reloads the game.</p><button class="btn" data-close>DONE</button></div></div>
+  <div id="settings" class="modal"><div class="panel"><h2>SETTINGS</h2><label class="lbl">GRAPHICS QUALITY</label><div id="setQ" class="seg"></div><p id="setCur" class="hint"></p><label class="chk"><input type="checkbox" id="setFps"> Show FPS counter</label><label class="chk"><input type="checkbox" id="setCockpit"> Play cockpit deploy sequence</label><p class="hint">Auto picks a level for your phone and lowers resolution, then bloom, if combat drops below ~42 FPS. Changing quality reloads the game.</p><button class="btn" data-close>DONE</button></div></div>
   <div id="howto" class="modal"><div class="panel how">
     <h2>HOW TO PLAY</h2>
     <div class="hw"><b>HANGAR</b><p>Swap Head, Core, each Arm, Legs, Back and a weapon in each hand. Every part changes armor, weight, speed, energy, damage and reach. Drag the mech to spin it, pinch to zoom. Paint it, pick a finish, wear and a decal. You have 3 build slots, saved automatically.</p></div>

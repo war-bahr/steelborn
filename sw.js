@@ -1,10 +1,10 @@
 /* Steelborn offline shell. Bump CACHE when shipping a new build. */
-const CACHE = 'steelborn-v2-0';
+const CACHE = 'steelborn-v3-0';
 const ASSETS = [
   "./",
   "./assets/fuma-C8WjmzpP.webp",
-  "./assets/index-DClrsGFI.js",
-  "./assets/index-qfrghOGX.css",
+  "./assets/index-DAMWf2uW.css",
+  "./assets/index-DXy3VkPK.js",
   "./assets/orbitron-latin-500-normal-BCCupJ8c.woff",
   "./assets/orbitron-latin-500-normal-DQ2gt4P1.woff2",
   "./assets/orbitron-latin-800-normal-CQafOXEd.woff2",
