@@ -14,8 +14,8 @@
   <link rel="apple-touch-icon" href="./icons/icon-192.png" />
   <link rel="manifest" href="./manifest.webmanifest" />
   <style>html,body{background:#05070c;height:100%;margin:0;overflow:hidden}#boot{z-index:99;color:#cfe8ff;letter-spacing:.2em;background:radial-gradient(circle at 50% 40%,#0f1a2a,#05070c 70%);flex-direction:column;justify-content:center;align-items:center;font:600 14px system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif;transition:opacity .6s;display:flex;position:fixed;top:0;bottom:0;left:0;right:0}#boot.hide{opacity:0;pointer-events:none}#boot .ring{border:3px solid #33d6ff33;border-top-color:#33d6ff;border-radius:50%;width:54px;height:54px;margin-bottom:18px;animation:.9s linear infinite sp}@keyframes sp{to{transform:rotate(360deg)}}</style>
-  <script type="module" crossorigin src="./assets/index-DXy3VkPK.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-DAMWf2uW.css">
+  <script type="module" crossorigin src="./assets/index-BzEdEVSM.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-6YF5wfNi.css">
 </head>
 <body>
   <div id="boot"><div class="ring"></div><div>STEELBORN</div><div id="boot-sub" style="opacity:.6;font-size:11px;margin-top:8px">BOOTING REACTOR…</div></div>
@@ -24,10 +24,12 @@
 
   <!-- TITLE -->
   <div id="title" class="screen hidden">
-    <div class="t-logo"><small>MECH COMBAT · v3</small><h1>STEEL<span>BORN</span></h1><p>Build it. Overheat it. Break them.</p></div>
+    <div class="t-logo"><small>MECH COMBAT · v4</small><h1>STEEL<span>BORN</span></h1><p>Build it. Overheat it. Break them.</p></div>
     <div class="t-menu">
       <button id="tCampaign" class="btn pri big">CAMPAIGN<small id="tCamp">REGION 1 · ASHGATE</small></button>
+      <button id="tRegion" class="btn sm rgsw" hidden>⇄ REGION 2 · FROSTMAW DAM</button>
       <button id="tDeploy" class="btn big2">ARENA<small>QUICK FIGHT · <span id="tBuild">VANGUARD</span></small></button>
+      <button id="tSurvival" class="btn big2">SURVIVAL<small id="tSurv">ENDLESS WAVES · BEST 0</small></button>
       <button id="tHangar" class="btn">HANGAR<small id="tUnl">0 PARTS</small></button>
       <div class="row"><button id="tHow" class="btn sm">HOW TO PLAY</button><button id="tSet" class="btn sm">SETTINGS</button></div>
     </div>
@@ -76,8 +78,8 @@
     <div id="minimap"><canvas id="mmCanvas" width="224" height="224"></canvas><i id="mmN">N</i><button id="mapBtn">MAP</button></div>
     <div id="capture"><b id="capTitle">CAPTURING</b><div><i id="capFill"></i></div></div>
     <button id="bAct" class="btn pri"></button>
-    <div id="bossBar"><div id="bossName">WARDEN</div><div class="bb"><i id="bossLag"></i><i id="bossFill"></i></div><div class="bsh"><i id="bossSh"></i></div><div id="bossPips"></div></div>
-    <div id="combo"><b id="comboN">0</b><span>HITS</span></div>
+    <div id="bossBar"><div id="bossName">WARDEN</div><div class="bb"><i id="bossLag"></i><i id="bossFill"></i></div><div class="bsh"><i id="bossSh"></i></div><div class="bst"><i id="bossStag"></i></div><div id="bossPips"></div></div>
+    <div id="combo"><b id="comboN">0</b><span>HITS</span><i id="comboR"></i></div>
     <div id="moveName"></div>
     <div id="banner"></div>
     <div id="msg"></div>
@@ -93,17 +95,21 @@
     <div id="zoomCtl"><button id="zIn" aria-label="Zoom in">+</button><button id="zOut" aria-label="Zoom out">−</button><button id="zReset" aria-label="Reset camera">⟲</button><i id="zLvl"></i></div>
     <div id="stickZone"><div id="stickBase"><div id="stickKnob"></div></div><span class="sz-hint">MOVE</span></div>
     <div id="btns">
-      <button data-a="finisher" id="bFin"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" class="bg"/><circle id="finRing" cx="50" cy="50" r="48" class="fg"/></svg><span>FINISH</span></button>
+      <button data-a="finisher" id="bFin"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" class="bg"/><circle id="finRing" cx="50" cy="50" r="48" class="fg"/></svg><span id="finTxt">FINISH</span></button>
       <button data-a="guard" id="bGuard"><span>GUARD</span></button>
       <button data-a="heavy" id="bHeavy"><span>HEAVY</span></button>
       <button data-a="dash" id="bDash"><span>DASH</span></button>
       <button data-a="fire" id="bFire"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" class="bg"/><circle id="fireRing" cx="50" cy="50" r="46" class="fg"/></svg><span>FIRE</span><em id="fireAmmo"></em></button>
-      <button data-a="light" id="bLight"><span>LIGHT</span></button>
+      <button data-a="light" id="bLight"><span>LIGHT</span><em>HOLD·HEAVY</em></button>
+      <button data-a="parry" id="bParry"><span>PARRY</span></button>
       <button data-a="ability" id="bAbil"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" class="bg"/><circle id="abRing" cx="50" cy="50" r="46" class="fg"/></svg><i id="abGlyph">⤓</i><span id="abName">JET SLAM</span><b id="abCd"></b></button>
     </div>
   </div>
 
   <!-- MODALS -->
+  <div id="survPick" class="modal">
+    <div class="panel sp"><small>WAVE <span id="spWave">5</span> SURVIVED · CHOOSE ONE</small><h2>FIELD UPGRADE</h2><div id="spCards"></div></div>
+  </div>
   <div id="results" class="modal">
     <div class="panel res">
       <small>OPERATION REPORT</small>
