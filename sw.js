@@ -1,10 +1,10 @@
 /* Steelborn offline shell. Bump CACHE when shipping a new build. */
-const CACHE = 'steelborn-v4-0';
+const CACHE = 'steelborn-v5-0';
 const ASSETS = [
   "./",
   "./assets/fuma-C8WjmzpP.webp",
-  "./assets/index-6YF5wfNi.css",
-  "./assets/index-BzEdEVSM.js",
+  "./assets/index-BIlWeVbp.css",
+  "./assets/index-DQS8J4Wo.js",
   "./assets/orbitron-latin-500-normal-BCCupJ8c.woff",
   "./assets/orbitron-latin-500-normal-DQ2gt4P1.woff2",
   "./assets/orbitron-latin-800-normal-CQafOXEd.woff2",
@@ -18,7 +18,27 @@ const ASSETS = [
   "./icons/icon-512.png",
   "./icons/icon-maskable-512.png",
   "./index.html",
-  "./manifest.webmanifest"
+  "./manifest.webmanifest",
+  "./portraits/e_floe.webp",
+  "./portraits/e_hail.webp",
+  "./portraits/e_knell.webp",
+  "./portraits/e_monarch.webp",
+  "./portraits/e_razorback.webp",
+  "./portraits/e_rime.webp",
+  "./portraits/e_tyrant.webp",
+  "./portraits/e_warden.webp",
+  "./portraits/e_widow.webp",
+  "./portraits/p_aya.webp",
+  "./portraits/p_aya_shout.webp",
+  "./portraits/p_kaito.webp",
+  "./portraits/p_kaito_shout.webp",
+  "./portraits/p_rio.webp",
+  "./portraits/p_rio_shout.webp",
+  "./portraits/p_sora.webp",
+  "./portraits/p_sora_shout.webp",
+  "./portraits/rival.webp",
+  "./portraits/rival_angry.webp",
+  "./portraits/vex.webp"
 ];
 
 self.addEventListener('install', (event) => {
