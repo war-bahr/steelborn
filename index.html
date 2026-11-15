@@ -14,18 +14,20 @@
   <link rel="apple-touch-icon" href="./icons/icon-192.png" />
   <link rel="manifest" href="./manifest.webmanifest" />
   <style>html,body{background:#05070c;height:100%;margin:0;overflow:hidden}#boot{z-index:99;color:#cfe8ff;letter-spacing:.2em;background:radial-gradient(circle at 50% 40%,#0f1a2a,#05070c 70%);flex-direction:column;justify-content:center;align-items:center;font:600 14px system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif;transition:opacity .6s;display:flex;position:fixed;top:0;bottom:0;left:0;right:0}#boot.hide{opacity:0;pointer-events:none}#boot .ring{border:3px solid #33d6ff33;border-top-color:#33d6ff;border-radius:50%;width:54px;height:54px;margin-bottom:18px;animation:.9s linear infinite sp}@keyframes sp{to{transform:rotate(360deg)}}</style>
-  <script type="module" crossorigin src="./assets/index-BXE6InHh.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-DpLxWluV.css">
+  <script type="module" crossorigin src="./assets/index-DClrsGFI.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-qfrghOGX.css">
 </head>
 <body>
   <div id="boot"><div class="ring"></div><div>STEELBORN</div><div id="boot-sub" style="opacity:.6;font-size:11px;margin-top:8px">BOOTING REACTOR…</div></div>
   <canvas id="c"></canvas>
+  <div id="loading"><div class="ring"></div><b>DEPLOYING TO ASHGATE…</b><small>Building the city</small></div>
 
   <!-- TITLE -->
   <div id="title" class="screen hidden">
-    <div class="t-logo"><small>MECH COMBAT · v1</small><h1>STEEL<span>BORN</span></h1><p>Build it. Overheat it. Break them.</p></div>
+    <div class="t-logo"><small>MECH COMBAT · v2</small><h1>STEEL<span>BORN</span></h1><p>Build it. Overheat it. Break them.</p></div>
     <div class="t-menu">
-      <button id="tDeploy" class="btn pri big">DEPLOY<small id="tBuild">VANGUARD</small></button>
+      <button id="tCampaign" class="btn pri big">CAMPAIGN<small id="tCamp">REGION 1 · ASHGATE</small></button>
+      <button id="tDeploy" class="btn big2">ARENA<small>QUICK FIGHT · <span id="tBuild">VANGUARD</span></small></button>
       <button id="tHangar" class="btn">HANGAR<small id="tUnl">0 PARTS</small></button>
       <div class="row"><button id="tHow" class="btn sm">HOW TO PLAY</button><button id="tSet" class="btn sm">SETTINGS</button></div>
     </div>
@@ -37,7 +39,7 @@
     <div class="g-top">
       <button id="gBack" class="ic" aria-label="Back">‹</button>
       <div class="g-title"><small>HANGAR · SLOT <span id="gSlotN">1</span></small><b id="gName">VANGUARD</b></div>
-      <button id="gDeploy" class="btn pri">DEPLOY ▸</button>
+      <span id="gScrap" class="scrap-chip">⛭ 0</span><button id="gDeploy" class="btn pri">DEPLOY ▸</button>
     </div>
     <div id="statPanel"></div>
     <div id="gToasts"></div>
@@ -67,6 +69,11 @@
       <button id="pauseBtn" class="ic" aria-label="Pause">II</button>
     </div>
     <div id="waveTxt"></div>
+    <div id="scrapTxt"></div>
+    <div id="objTrack"></div>
+    <div id="minimap"><canvas id="mmCanvas" width="224" height="224"></canvas><i id="mmN">N</i><button id="mapBtn">MAP</button></div>
+    <div id="capture"><b id="capTitle">CAPTURING</b><div><i id="capFill"></i></div></div>
+    <button id="bAct" class="btn pri"></button>
     <div id="bossBar"><div id="bossName">WARDEN</div><div class="bb"><i id="bossLag"></i><i id="bossFill"></i></div><div id="bossPips"></div></div>
     <div id="combo"><b id="comboN">0</b><span>HITS</span></div>
     <div id="moveName"></div>
@@ -83,6 +90,7 @@
       <button data-a="heavy" id="bHeavy"><span>HEAVY</span></button>
       <button data-a="dash" id="bDash"><span>DASH</span></button>
       <button data-a="light" id="bLight"><span>LIGHT</span></button>
+      <button data-a="ability" id="bAbil"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" class="bg"/><circle id="abRing" cx="50" cy="50" r="46" class="fg"/></svg><i id="abGlyph">⤓</i><span id="abName">JET SLAM</span><b id="abCd"></b></button>
     </div>
   </div>
 
@@ -98,7 +106,27 @@
       <div class="row"><button id="rRetry" class="btn pri">REDEPLOY</button><button id="rHangar" class="btn">HANGAR</button></div>
     </div>
   </div>
-  <div id="pause" class="modal"><div class="panel"><h2>PAUSED</h2><div class="col"><button id="pResume" class="btn pri">RESUME</button><button id="pRetry" class="btn">RESTART</button><button id="pQuit" class="btn">QUIT TO HANGAR</button></div></div></div>
+  <div id="pause" class="modal"><div class="panel"><h2>PAUSED</h2><div class="col"><button id="pResume" class="btn pri">RESUME</button><button id="pMap" class="btn">REGION MAP</button><button id="pRetry" class="btn">RESTART</button><button id="pQuit" class="btn">QUIT TO HANGAR</button></div></div></div>
+  <div id="mapScreen" class="modal"><div class="panel mapp">
+    <div class="mp-h"><small>REGION 1</small><h2>ASHGATE</h2></div>
+    <div class="mp-wrap"><canvas id="mapCanvas" width="640" height="840"></canvas></div>
+    <div id="mapLegend"></div>
+    <label class="lbl">FAST TRAVEL · GARAGES</label>
+    <div id="ftList" class="col"></div>
+    <button class="btn" id="mapClose">CLOSE</button>
+  </div></div>
+  <div id="intro" class="modal"><div class="panel intro">
+    <small id="inStep">TRANSMISSION 1/3</small>
+    <h2 id="inTitle">ASHGATE</h2>
+    <p id="inText"></p>
+    <div class="row"><button id="inSkip" class="btn">SKIP</button><button id="inNext" class="btn pri">NEXT ▸</button></div>
+  </div></div>
+  <div id="clearScreen" class="modal"><div class="panel res win">
+    <small>CAMPAIGN · REGION 1</small><h2>REGION SECURED</h2>
+    <p class="hint" id="clText"></p>
+    <h3>BOSS PARTS RECOVERED</h3><div id="clParts"></div>
+    <div class="row"><button id="clGo" class="btn pri">KEEP EXPLORING</button><button id="clHangar" class="btn">HUB GARAGE</button></div>
+  </div></div>
   <div id="settings" class="modal"><div class="panel"><h2>SETTINGS</h2><label class="lbl">GRAPHICS QUALITY</label><div id="setQ" class="seg"></div><p id="setCur" class="hint"></p><label class="chk"><input type="checkbox" id="setFps"> Show FPS counter</label><p class="hint">Auto picks a level for your phone and lowers resolution, then bloom, if combat drops below ~42 FPS. Changing quality reloads the game.</p><button class="btn" data-close>DONE</button></div></div>
   <div id="howto" class="modal"><div class="panel how">
     <h2>HOW TO PLAY</h2>
@@ -108,6 +136,9 @@
     <div class="hw"><b>OVERDRIVE</b><p>Attacking heats your core. More heat means more damage, and the red zone is Overdrive. Hit 100% and you overheat and stall to vent. Cores and coolers change how fast you heat and cool.</p></div>
     <div class="hw"><b>FINISHER</b><p>Hits, kills and parries fill the ring on <em>FINISH</em>. When it glows, tap for a slow-motion execution on the nearest enemy.</p></div>
     <div class="hw"><b>PARTS</b><p>Enemies drop part crates. Walk over them, or they fly to you when the wave ends. The Warden boss drops its own signature parts.</p></div>
+    <div class="hw"><b>RARITY &amp; SCRAP</b><p>Parts come in <em>Common</em>, <em>Rare</em>, <em>Epic</em>, <em>Legendary</em> and <em>Boss</em> tiers; higher tiers boost the part's stats. Kills and salvage give scrap. Spend it in the hangar to upgrade a part up to +5. A duplicate of a higher tier upgrades your copy; any other duplicate turns into scrap.</p></div>
+    <div class="hw"><b>ABILITY</b><p>Your back pack has an active ability on the button above DASH. Each pack has its own: jet slam, grapple dash, EMP, missiles, shield bubble, overdrive, decoy or orbital lance. It recharges on a cooldown.</p></div>
+    <div class="hw"><b>CAMPAIGN</b><p>Explore Ashgate, a ruined city. Capture the two outposts to unlock fast-travel garages and open the Monarch's fortress. Named elites and side jobs drop rare parts. Tap MAP to see the region and travel between garages.</p></div>
     <button class="btn pri" data-close>GOT IT</button>
   </div></div>
 </body>
